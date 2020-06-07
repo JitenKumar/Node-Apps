@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
 const app = express();
+const port = process.env.PORT || 5000;
 const publicPath = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../templates/views");
 const partialsPath = path.join(__dirname, "../templates/partials");
@@ -43,7 +44,7 @@ app.get("/weather", (req, res) => {
       error: "Please provide the address",
     });
   }
-  geoCode(req.query.address, (error, { latitude, longitude }={}) => {
+  geoCode(req.query.address, (error, { latitude, longitude } = {}) => {
     if (error) {
       return res.send({
         error,
@@ -56,9 +57,8 @@ app.get("/weather", (req, res) => {
         });
       }
       return res.send({
-        forecast : response.description,
-        location : response.location
-
+        forecast: response.description,
+        location: response.location,
       });
     });
   });
@@ -78,6 +78,6 @@ app.get("*", (req, res) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("server is up and running on 5000");
+app.listen(port, () => {
+  console.log("server is up and running on port " + port);
 });
